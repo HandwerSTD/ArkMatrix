@@ -1,0 +1,17 @@
+# HarmonyOS
+node_modules/
+oh_modules/
+oh-package-lock.json5
+.hvigor/
+build/
+local.properties
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.supermonkey/
+
+# OS
+.DS_Store
+Thumbs.db
