@@ -1,5 +1,3 @@
-import { ConnectionState } from '../protocol/IMessageConnector'
-
 @ComponentV2
 export struct ChatInput {
   @Param disabled: boolean = false
