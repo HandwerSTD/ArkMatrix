@@ -3,7 +3,6 @@ import { ChatInput } from '../view/ChatInput'
 import { ChatViewModel } from '../viewmodel/ChatViewModel'
 import { ConnectionState } from '../protocol/IMessageConnector'
 import { router } from '@kit.ArkUI'
-import { promptAction } from '@kit.ArkUI'
 
 @Entry
 @ComponentV2
