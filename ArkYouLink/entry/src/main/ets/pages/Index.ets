@@ -60,6 +60,28 @@ export struct Index {
         onUpdateStatus: () => { promptAction.showToast({ message: '状态已更新' }) }
       })
 
+      Row() {
+        Text('💬')
+          .fontSize(20)
+          .margin({ right: 8 })
+        Text('Bot 对话')
+          .fontSize(14)
+          .fontWeight(FontWeight.Medium)
+          .layoutWeight(1)
+        Image($r('sys.media.ohos_ic_public_arrow_right'))
+          .width(16)
+          .height(16)
+          .fillColor('#CCC')
+      }
+      .width('100%')
+      .padding(14)
+      .backgroundColor(Color.White)
+      .margin({ left: 12, right: 12, top: 8 })
+      .borderRadius(8)
+      .onClick(() => {
+        router.pushUrl({ url: 'pages/ChatPage' })
+      })
+
       Text('今日日程')
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
