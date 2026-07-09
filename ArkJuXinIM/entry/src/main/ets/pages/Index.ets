@@ -44,7 +44,7 @@ export struct Index {
           ListItem() {
             ContactItem({
               contact: contact,
-              onClick: (id: string) => {
+              onItemClick: (id: string) => {
                 router.pushUrl({ url: 'pages/Chat', params: { contactId: id, contactName: contact.name } })
               }
             })

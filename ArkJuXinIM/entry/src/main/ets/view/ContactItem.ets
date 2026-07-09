@@ -3,7 +3,7 @@ import { Contact } from '../model/JuXinIMModels'
 @ComponentV2
 export struct ContactItem {
   @Param contact: Contact = new Contact()
-  @Event onClick: (id: string) => void = (id: string) => {}
+  @Event onItemClick: (id: string) => void = (id: string) => {}
 
   build() {
     Row() {
@@ -40,7 +40,7 @@ export struct ContactItem {
     .width('100%')
     .padding(12)
     .onClick(() => {
-      this.onClick(this.contact.id)
+      this.onItemClick(this.contact.id)
     })
   }
 }
