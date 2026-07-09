@@ -44,7 +44,8 @@ entry/src/main/ets/
 │   ├── ChatInput.ets
 │   └── ChatList.ets
 └── pages/
-    └── ChatPage.ets
+    ├── ChatPage.ets
+    └── ConnectionSettingsPage.ets
 ```
 
 ## 协议层
@@ -102,14 +103,16 @@ JSON-over-WebSocket，参考 OpenClaw 模式：
 - **ChatList** — ForEach 渲染消息，role=user 右侧/bot 左侧对齐
 - **ChatBubble** — contentType=text 文本气泡，=image 图片卡片，含发送状态
 - **ChatInput** — TextInput + 发送按钮，预留图片选择入口
+- **ConnectionSettingsPage** — 连接配置页，输入 WebSocket 地址（ws://host:port），保存后用于 ChatViewModel.connect()
 
 ## 状态管理
 
 ChatViewModel 持有 IMessageConnector 和 messages 数组（@Trace），暴露：
 - `messages`: Message[]
+- `connectionUrl`: string（由 ConnectionSettingsPage 持久化配置）
 - `sendText(text)`
 - `sendImage(url)`
-- `connect() / disconnect()`
+- `connect() / disconnect()`（使用 connectionUrl 连接）
 
 ## V1 范围
 
@@ -121,5 +124,6 @@ ChatViewModel 持有 IMessageConnector 和 messages 数组（@Trace），暴露�
 - [x] 图片消息气泡
 - [x] 输入区域
 - [x] ChatPage 页面组装
+- [x] ConnectionSettingsPage 连接配置页
 - [ ] 无流式输出
 - [ ] 无工具调用展示
