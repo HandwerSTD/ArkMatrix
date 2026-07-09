@@ -1,6 +1,6 @@
-import { Trip, DailyPlan, PlanItem } from '../model/TripModels'
+import { Trip, DailyPlan, PlanItem, ITripData } from '../model/TripModels'
 
-const RAW_TRIPS: Record<string, Object>[] = [
+const RAW_TRIPS: ITripData[] = [
   {
     id: 'trip001',
     title: '南京三日游',
@@ -78,21 +78,21 @@ const RAW_TRIPS: Record<string, Object>[] = [
 ]
 
 export class TripManagerMock {
-  static getRawTrips(): Record<string, Object>[] {
+  static getRawTrips(): ITripData[] {
     return RAW_TRIPS
   }
 
   static getTrips(): Trip[] {
-    return RAW_TRIPS.map((d: Record<string, Object>) => Trip.fromJSON(d))
+    return RAW_TRIPS.map((d: ITripData) => Trip.fromJSON(d))
   }
 
   static createTrip(data: Record<string, Object>): Trip {
-    let d: Record<string, Object> = {
+    let d: ITripData = {
       id: 'trip_new_' + Date.now(),
-      title: data['title'] || '',
-      destination: data['destination'] || '',
-      startDate: data['startDate'] || '',
-      endDate: data['endDate'] || '',
+      title: (data['title'] as string) || '',
+      destination: (data['destination'] as string) || '',
+      startDate: (data['startDate'] as string) || '',
+      endDate: (data['endDate'] as string) || '',
       cover: '🗺️',
       status: '待出发',
       dailyPlans: []

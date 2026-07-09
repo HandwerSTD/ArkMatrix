@@ -1,3 +1,27 @@
+export interface IPoiData {
+  id: string
+  name: string
+  category: string
+  rating: number
+  reviewCount: number
+  address: string
+  isCollected: boolean
+  image: string
+}
+
+export interface IReviewData {
+  author: string
+  rating: number
+  content: string
+  date: string
+}
+
+export interface ICollectionData {
+  id: string
+  name: string
+  poiIds: string[]
+}
+
 @ObservedV2
 export class POI {
   @Trace id: string = ''
@@ -9,7 +33,7 @@ export class POI {
   @Trace isCollected: boolean = false
   @Trace image: string = ''
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IPoiData {
     return {
       id: this.id, name: this.name, category: this.category,
       rating: this.rating, reviewCount: this.reviewCount,
@@ -17,16 +41,11 @@ export class POI {
     }
   }
 
-  static fromJSON(data: Record<string, Object>): POI {
+  static fromJSON(data: IPoiData): POI {
     let p: POI = new POI()
-    if (data['id'] !== undefined) p.id = data['id'] as string
-    if (data['name'] !== undefined) p.name = data['name'] as string
-    if (data['category'] !== undefined) p.category = data['category'] as string
-    if (data['rating'] !== undefined) p.rating = data['rating'] as number
-    if (data['reviewCount'] !== undefined) p.reviewCount = data['reviewCount'] as number
-    if (data['address'] !== undefined) p.address = data['address'] as string
-    if (data['isCollected'] !== undefined) p.isCollected = data['isCollected'] as boolean
-    if (data['image'] !== undefined) p.image = data['image'] as string
+    p.id = data.id; p.name = data.name; p.category = data.category
+    p.rating = data.rating; p.reviewCount = data.reviewCount
+    p.address = data.address; p.isCollected = data.isCollected; p.image = data.image
     return p
   }
 }
@@ -38,16 +57,13 @@ export class Review {
   @Trace content: string = ''
   @Trace date: string = ''
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IReviewData {
     return { author: this.author, rating: this.rating, content: this.content, date: this.date }
   }
 
-  static fromJSON(data: Record<string, Object>): Review {
+  static fromJSON(data: IReviewData): Review {
     let r: Review = new Review()
-    if (data['author'] !== undefined) r.author = data['author'] as string
-    if (data['rating'] !== undefined) r.rating = data['rating'] as number
-    if (data['content'] !== undefined) r.content = data['content'] as string
-    if (data['date'] !== undefined) r.date = data['date'] as string
+    r.author = data.author; r.rating = data.rating; r.content = data.content; r.date = data.date
     return r
   }
 }
@@ -58,15 +74,13 @@ export class Collection {
   @Trace name: string = ''
   @Trace poiIds: string[] = []
 
-  toJSON(): Record<string, Object> {
+  toJSON(): ICollectionData {
     return { id: this.id, name: this.name, poiIds: this.poiIds }
   }
 
-  static fromJSON(data: Record<string, Object>): Collection {
+  static fromJSON(data: ICollectionData): Collection {
     let c: Collection = new Collection()
-    if (data['id'] !== undefined) c.id = data['id'] as string
-    if (data['name'] !== undefined) c.name = data['name'] as string
-    if (data['poiIds'] !== undefined) c.poiIds = data['poiIds'] as string[]
+    c.id = data.id; c.name = data.name; c.poiIds = data.poiIds
     return c
   }
 }

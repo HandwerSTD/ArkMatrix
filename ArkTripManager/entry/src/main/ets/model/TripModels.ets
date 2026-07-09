@@ -1,3 +1,28 @@
+export interface IPlanItemData {
+  time: string
+  title: string
+  type: string
+  location: string
+  note: string
+}
+
+export interface IDailyPlanData {
+  day: number
+  date: string
+  items: IPlanItemData[]
+}
+
+export interface ITripData {
+  id: string
+  title: string
+  destination: string
+  startDate: string
+  endDate: string
+  cover: string
+  status: string
+  dailyPlans: IDailyPlanData[]
+}
+
 @ObservedV2
 export class PlanItem {
   @Trace time: string = ''
@@ -6,17 +31,13 @@ export class PlanItem {
   @Trace location: string = ''
   @Trace note: string = ''
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IPlanItemData {
     return { time: this.time, title: this.title, type: this.type, location: this.location, note: this.note }
   }
 
-  static fromJSON(data: Record<string, Object>): PlanItem {
+  static fromJSON(data: IPlanItemData): PlanItem {
     let p: PlanItem = new PlanItem()
-    if (data['time'] !== undefined) p.time = data['time'] as string
-    if (data['title'] !== undefined) p.title = data['title'] as string
-    if (data['type'] !== undefined) p.type = data['type'] as string
-    if (data['location'] !== undefined) p.location = data['location'] as string
-    if (data['note'] !== undefined) p.note = data['note'] as string
+    p.time = data.time; p.title = data.title; p.type = data.type; p.location = data.location; p.note = data.note
     return p
   }
 }
@@ -27,7 +48,7 @@ export class DailyPlan {
   @Trace date: string = ''
   @Trace items: PlanItem[] = []
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IDailyPlanData {
     return {
       day: this.day,
       date: this.date,
@@ -35,14 +56,10 @@ export class DailyPlan {
     }
   }
 
-  static fromJSON(data: Record<string, Object>): DailyPlan {
+  static fromJSON(data: IDailyPlanData): DailyPlan {
     let d: DailyPlan = new DailyPlan()
-    if (data['day'] !== undefined) d.day = data['day'] as number
-    if (data['date'] !== undefined) d.date = data['date'] as string
-    if (data['items']) {
-      let rawItems: Record<string, Object>[] = data['items'] as Record<string, Object>[]
-      d.items = rawItems.map((ri: Record<string, Object>) => PlanItem.fromJSON(ri))
-    }
+    d.day = data.day; d.date = data.date
+    d.items = data.items.map((ri: IPlanItemData) => PlanItem.fromJSON(ri))
     return d
   }
 }
@@ -58,7 +75,7 @@ export class Trip {
   @Trace status: string = ''
   @Trace dailyPlans: DailyPlan[] = []
 
-  toJSON(): Record<string, Object> {
+  toJSON(): ITripData {
     return {
       id: this.id, title: this.title, destination: this.destination,
       startDate: this.startDate, endDate: this.endDate, cover: this.cover,
@@ -67,19 +84,12 @@ export class Trip {
     }
   }
 
-  static fromJSON(data: Record<string, Object>): Trip {
+  static fromJSON(data: ITripData): Trip {
     let t: Trip = new Trip()
-    if (data['id'] !== undefined) t.id = data['id'] as string
-    if (data['title'] !== undefined) t.title = data['title'] as string
-    if (data['destination'] !== undefined) t.destination = data['destination'] as string
-    if (data['startDate'] !== undefined) t.startDate = data['startDate'] as string
-    if (data['endDate'] !== undefined) t.endDate = data['endDate'] as string
-    if (data['cover'] !== undefined) t.cover = data['cover'] as string
-    if (data['status'] !== undefined) t.status = data['status'] as string
-    if (data['dailyPlans']) {
-      let raw: Record<string, Object>[] = data['dailyPlans'] as Record<string, Object>[]
-      t.dailyPlans = raw.map((rd: Record<string, Object>) => DailyPlan.fromJSON(rd))
-    }
+    t.id = data.id; t.title = data.title; t.destination = data.destination
+    t.startDate = data.startDate; t.endDate = data.endDate; t.cover = data.cover
+    t.status = data.status
+    t.dailyPlans = data.dailyPlans.map((rd: IDailyPlanData) => DailyPlan.fromJSON(rd))
     return t
   }
 }

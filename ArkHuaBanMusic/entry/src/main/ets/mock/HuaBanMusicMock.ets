@@ -1,6 +1,6 @@
-import { Playlist, TravelRadio } from '../model/HuaBanMusicModels'
+import { Playlist, TravelRadio, IPlaylistData, ITravelRadioData } from '../model/HuaBanMusicModels'
 
-const RAW_PLAYLISTS: Record<string, Object>[] = [
+const RAW_PLAYLISTS: IPlaylistData[] = [
   {
     id: 'pl001',
     name: '南京城市民谣',
@@ -35,7 +35,12 @@ const RAW_PLAYLISTS: Record<string, Object>[] = [
   }
 ]
 
-const RAW_RADIO_TEMPLATES: Record<string, Record<string, Object>> = {
+interface ITravelRadioTemplate {
+  mood: string
+  songs: string[]
+}
+
+const RAW_RADIO_TEMPLATES: Record<string, ITravelRadioTemplate> = {
   '南京': {
     mood: '金陵古韵',
     songs: [
@@ -73,23 +78,23 @@ const RAW_RADIO_TEMPLATES: Record<string, Record<string, Object>> = {
 }
 
 export class HuaBanMusicMock {
-  static getRawPlaylists(): Record<string, Object>[] {
+  static getRawPlaylists(): IPlaylistData[] {
     return RAW_PLAYLISTS
   }
 
   static getPlaylists(): Playlist[] {
-    return RAW_PLAYLISTS.map((d: Record<string, Object>) => Playlist.fromJSON(d))
+    return RAW_PLAYLISTS.map((d: IPlaylistData) => Playlist.fromJSON(d))
   }
 
   static generateRadio(dest: string): TravelRadio {
-    let template: Record<string, Object> = RAW_RADIO_TEMPLATES[dest]
+    let template: ITravelRadioTemplate | undefined = RAW_RADIO_TEMPLATES[dest]
     if (!template) {
       template = RAW_RADIO_TEMPLATES['default']
     }
-    let data: Record<string, Object> = {
+    let data: ITravelRadioData = {
       destination: dest,
-      mood: template['mood'],
-      songs: template['songs'],
+      mood: template.mood,
+      songs: template.songs,
       isGenerated: true,
       description: `根据目的地${dest}为你生成专属旅途电台`
     }

@@ -1,3 +1,20 @@
+export interface IPlaylistData {
+  id: string
+  name: string
+  cover: string
+  songCount: number
+  description: string
+  songs: string[]
+}
+
+export interface ITravelRadioData {
+  destination: string
+  mood: string
+  songs: string[]
+  isGenerated: boolean
+  description: string
+}
+
 @ObservedV2
 export class Playlist {
   @Trace id: string = ''
@@ -7,7 +24,7 @@ export class Playlist {
   @Trace description: string = ''
   @Trace songs: string[] = []
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IPlaylistData {
     return {
       id: this.id,
       name: this.name,
@@ -18,14 +35,14 @@ export class Playlist {
     }
   }
 
-  static fromJSON(data: Record<string, Object>): Playlist {
+  static fromJSON(data: IPlaylistData): Playlist {
     let p: Playlist = new Playlist()
-    if (data['id'] !== undefined) p.id = data['id'] as string
-    if (data['name'] !== undefined) p.name = data['name'] as string
-    if (data['cover'] !== undefined) p.cover = data['cover'] as string
-    if (data['songCount'] !== undefined) p.songCount = data['songCount'] as number
-    if (data['description'] !== undefined) p.description = data['description'] as string
-    if (data['songs'] !== undefined) p.songs = data['songs'] as string[]
+    p.id = data.id
+    p.name = data.name
+    p.cover = data.cover
+    p.songCount = data.songCount
+    p.description = data.description
+    p.songs = data.songs
     return p
   }
 }
@@ -38,7 +55,7 @@ export class TravelRadio {
   @Trace isGenerated: boolean = false
   @Trace description: string = ''
 
-  toJSON(): Record<string, Object> {
+  toJSON(): ITravelRadioData {
     return {
       destination: this.destination,
       mood: this.mood,
@@ -48,13 +65,13 @@ export class TravelRadio {
     }
   }
 
-  static fromJSON(data: Record<string, Object>): TravelRadio {
+  static fromJSON(data: ITravelRadioData): TravelRadio {
     let r: TravelRadio = new TravelRadio()
-    if (data['destination'] !== undefined) r.destination = data['destination'] as string
-    if (data['mood'] !== undefined) r.mood = data['mood'] as string
-    if (data['songs'] !== undefined) r.songs = data['songs'] as string[]
-    if (data['isGenerated'] !== undefined) r.isGenerated = data['isGenerated'] as boolean
-    if (data['description'] !== undefined) r.description = data['description'] as string
+    r.destination = data.destination
+    r.mood = data.mood
+    r.songs = data.songs
+    r.isGenerated = data.isGenerated
+    r.description = data.description
     return r
   }
 }

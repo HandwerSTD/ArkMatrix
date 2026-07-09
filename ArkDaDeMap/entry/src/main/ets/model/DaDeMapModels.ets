@@ -1,3 +1,22 @@
+export interface IPoiData {
+  name: string
+  type: string
+  rating: number
+  distance: string
+  address: string
+  tags: string[]
+  isCollected: boolean
+}
+
+export interface IRouteData {
+  type: string
+  duration: string
+  distance: string
+  traffic: string
+  steps: string[]
+  hasDelay: boolean
+}
+
 @ObservedV2
 export class POI {
   @Trace name: string = ''
@@ -8,7 +27,7 @@ export class POI {
   @Trace tags: string[] = []
   @Trace isCollected: boolean = false
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IPoiData {
     return {
       name: this.name,
       type: this.type,
@@ -20,15 +39,15 @@ export class POI {
     }
   }
 
-  static fromJSON(data: Record<string, Object>): POI {
+  static fromJSON(data: IPoiData): POI {
     let p: POI = new POI()
-    if (data['name'] !== undefined) p.name = data['name'] as string
-    if (data['type'] !== undefined) p.type = data['type'] as string
-    if (data['rating'] !== undefined) p.rating = data['rating'] as number
-    if (data['distance'] !== undefined) p.distance = data['distance'] as string
-    if (data['address'] !== undefined) p.address = data['address'] as string
-    if (data['tags'] !== undefined) p.tags = data['tags'] as string[]
-    if (data['isCollected'] !== undefined) p.isCollected = data['isCollected'] as boolean
+    p.name = data.name
+    p.type = data.type
+    p.rating = data.rating
+    p.distance = data.distance
+    p.address = data.address
+    p.tags = data.tags
+    p.isCollected = data.isCollected
     return p
   }
 }
@@ -42,7 +61,7 @@ export class Route {
   @Trace steps: string[] = []
   @Trace hasDelay: boolean = false
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IRouteData {
     return {
       type: this.type,
       duration: this.duration,
@@ -53,14 +72,14 @@ export class Route {
     }
   }
 
-  static fromJSON(data: Record<string, Object>): Route {
+  static fromJSON(data: IRouteData): Route {
     let r: Route = new Route()
-    if (data['type'] !== undefined) r.type = data['type'] as string
-    if (data['duration'] !== undefined) r.duration = data['duration'] as string
-    if (data['distance'] !== undefined) r.distance = data['distance'] as string
-    if (data['traffic'] !== undefined) r.traffic = data['traffic'] as string
-    if (data['steps'] !== undefined) r.steps = data['steps'] as string[]
-    if (data['hasDelay'] !== undefined) r.hasDelay = data['hasDelay'] as boolean
+    r.type = data.type
+    r.duration = data.duration
+    r.distance = data.distance
+    r.traffic = data.traffic
+    r.steps = data.steps
+    r.hasDelay = data.hasDelay
     return r
   }
 }

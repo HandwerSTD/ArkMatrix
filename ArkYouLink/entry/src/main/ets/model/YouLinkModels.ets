@@ -1,3 +1,29 @@
+export interface IScheduleEventData {
+  time: string
+  title: string
+  location: string
+  isImportant: boolean
+}
+
+export interface ILeaveRecordData {
+  id: string
+  type: string
+  startDate: string
+  endDate: string
+  status: string
+  reason: string
+}
+
+export interface IUserStatusData {
+  label: string
+  icon: string
+}
+
+export interface IAutoReplyRuleData {
+  isEnabled: boolean
+  presetMessage: string
+}
+
 @ObservedV2
 export class ScheduleEvent {
   @Trace time: string = ''
@@ -5,16 +31,13 @@ export class ScheduleEvent {
   @Trace location: string = ''
   @Trace isImportant: boolean = false
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IScheduleEventData {
     return { time: this.time, title: this.title, location: this.location, isImportant: this.isImportant }
   }
 
-  static fromJSON(data: Record<string, Object>): ScheduleEvent {
+  static fromJSON(data: IScheduleEventData): ScheduleEvent {
     let s: ScheduleEvent = new ScheduleEvent()
-    if (data['time'] !== undefined) s.time = data['time'] as string
-    if (data['title'] !== undefined) s.title = data['title'] as string
-    if (data['location'] !== undefined) s.location = data['location'] as string
-    if (data['isImportant'] !== undefined) s.isImportant = data['isImportant'] as boolean
+    s.time = data.time; s.title = data.title; s.location = data.location; s.isImportant = data.isImportant
     return s
   }
 }
@@ -28,21 +51,17 @@ export class LeaveRecord {
   @Trace status: string = ''
   @Trace reason: string = ''
 
-  toJSON(): Record<string, Object> {
+  toJSON(): ILeaveRecordData {
     return {
       id: this.id, type: this.type, startDate: this.startDate,
       endDate: this.endDate, status: this.status, reason: this.reason
     }
   }
 
-  static fromJSON(data: Record<string, Object>): LeaveRecord {
+  static fromJSON(data: ILeaveRecordData): LeaveRecord {
     let r: LeaveRecord = new LeaveRecord()
-    if (data['id'] !== undefined) r.id = data['id'] as string
-    if (data['type'] !== undefined) r.type = data['type'] as string
-    if (data['startDate'] !== undefined) r.startDate = data['startDate'] as string
-    if (data['endDate'] !== undefined) r.endDate = data['endDate'] as string
-    if (data['status'] !== undefined) r.status = data['status'] as string
-    if (data['reason'] !== undefined) r.reason = data['reason'] as string
+    r.id = data.id; r.type = data.type; r.startDate = data.startDate
+    r.endDate = data.endDate; r.status = data.status; r.reason = data.reason
     return r
   }
 }
@@ -52,14 +71,13 @@ export class UserStatus {
   @Trace label: string = '在线'
   @Trace icon: string = '🟢'
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IUserStatusData {
     return { label: this.label, icon: this.icon }
   }
 
-  static fromJSON(data: Record<string, Object>): UserStatus {
+  static fromJSON(data: IUserStatusData): UserStatus {
     let s: UserStatus = new UserStatus()
-    if (data['label'] !== undefined) s.label = data['label'] as string
-    if (data['icon'] !== undefined) s.icon = data['icon'] as string
+    s.label = data.label; s.icon = data.icon
     return s
   }
 }
@@ -69,14 +87,13 @@ export class AutoReplyRule {
   @Trace isEnabled: boolean = false
   @Trace presetMessage: string = ''
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IAutoReplyRuleData {
     return { isEnabled: this.isEnabled, presetMessage: this.presetMessage }
   }
 
-  static fromJSON(data: Record<string, Object>): AutoReplyRule {
+  static fromJSON(data: IAutoReplyRuleData): AutoReplyRule {
     let r: AutoReplyRule = new AutoReplyRule()
-    if (data['isEnabled'] !== undefined) r.isEnabled = data['isEnabled'] as boolean
-    if (data['presetMessage'] !== undefined) r.presetMessage = data['presetMessage'] as string
+    r.isEnabled = data.isEnabled; r.presetMessage = data.presetMessage
     return r
   }
 }

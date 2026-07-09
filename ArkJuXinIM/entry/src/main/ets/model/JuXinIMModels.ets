@@ -1,3 +1,30 @@
+export interface IPlanCardData {
+  title: string
+  date: string
+  destination: string
+  ticketInfo: string
+  poiCount: number
+}
+
+export interface IContactData {
+  id: string
+  name: string
+  avatar: string
+  status: string
+  recentMessage: string
+  recentTime: string
+}
+
+export interface IMessageData {
+  id: string
+  fromId: string
+  content: string
+  time: string
+  isMe: boolean
+  isPlanCard: boolean
+  planCard: IPlanCardData | null
+}
+
 @ObservedV2
 export class PlanCardData {
   @Trace title: string = ''
@@ -6,20 +33,17 @@ export class PlanCardData {
   @Trace ticketInfo: string = ''
   @Trace poiCount: number = 0
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IPlanCardData {
     return {
       title: this.title, date: this.date, destination: this.destination,
       ticketInfo: this.ticketInfo, poiCount: this.poiCount
     }
   }
 
-  static fromJSON(data: Record<string, Object>): PlanCardData {
+  static fromJSON(data: IPlanCardData): PlanCardData {
     let p: PlanCardData = new PlanCardData()
-    if (data['title'] !== undefined) p.title = data['title'] as string
-    if (data['date'] !== undefined) p.date = data['date'] as string
-    if (data['destination'] !== undefined) p.destination = data['destination'] as string
-    if (data['ticketInfo'] !== undefined) p.ticketInfo = data['ticketInfo'] as string
-    if (data['poiCount'] !== undefined) p.poiCount = data['poiCount'] as number
+    p.title = data.title; p.date = data.date; p.destination = data.destination
+    p.ticketInfo = data.ticketInfo; p.poiCount = data.poiCount
     return p
   }
 }
@@ -33,21 +57,17 @@ export class Contact {
   @Trace recentMessage: string = ''
   @Trace recentTime: string = ''
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IContactData {
     return {
       id: this.id, name: this.name, avatar: this.avatar,
       status: this.status, recentMessage: this.recentMessage, recentTime: this.recentTime
     }
   }
 
-  static fromJSON(data: Record<string, Object>): Contact {
+  static fromJSON(data: IContactData): Contact {
     let c: Contact = new Contact()
-    if (data['id'] !== undefined) c.id = data['id'] as string
-    if (data['name'] !== undefined) c.name = data['name'] as string
-    if (data['avatar'] !== undefined) c.avatar = data['avatar'] as string
-    if (data['status'] !== undefined) c.status = data['status'] as string
-    if (data['recentMessage'] !== undefined) c.recentMessage = data['recentMessage'] as string
-    if (data['recentTime'] !== undefined) c.recentTime = data['recentTime'] as string
+    c.id = data.id; c.name = data.name; c.avatar = data.avatar
+    c.status = data.status; c.recentMessage = data.recentMessage; c.recentTime = data.recentTime
     return c
   }
 }
@@ -62,29 +82,20 @@ export class Message {
   @Trace isPlanCard: boolean = false
   @Trace planCard: PlanCardData | null = null
 
-  toJSON(): Record<string, Object> {
-    let json: Record<string, Object> = {
+  toJSON(): IMessageData {
+    return {
       id: this.id, fromId: this.fromId, content: this.content,
-      time: this.time, isMe: this.isMe, isPlanCard: this.isPlanCard
+      time: this.time, isMe: this.isMe, isPlanCard: this.isPlanCard,
+      planCard: this.planCard ? this.planCard.toJSON() : null
     }
-    if (this.planCard) {
-      json['planCard'] = this.planCard.toJSON()
-    } else {
-      json['planCard'] = null
-    }
-    return json
   }
 
-  static fromJSON(data: Record<string, Object>): Message {
+  static fromJSON(data: IMessageData): Message {
     let m: Message = new Message()
-    if (data['id'] !== undefined) m.id = data['id'] as string
-    if (data['fromId'] !== undefined) m.fromId = data['fromId'] as string
-    if (data['content'] !== undefined) m.content = data['content'] as string
-    if (data['time'] !== undefined) m.time = data['time'] as string
-    if (data['isMe'] !== undefined) m.isMe = data['isMe'] as boolean
-    if (data['isPlanCard'] !== undefined) m.isPlanCard = data['isPlanCard'] as boolean
-    if (data['planCard']) {
-      m.planCard = PlanCardData.fromJSON(data['planCard'] as Record<string, Object>)
+    m.id = data.id; m.fromId = data.fromId; m.content = data.content
+    m.time = data.time; m.isMe = data.isMe; m.isPlanCard = data.isPlanCard
+    if (data.planCard) {
+      m.planCard = PlanCardData.fromJSON(data.planCard)
     }
     return m
   }

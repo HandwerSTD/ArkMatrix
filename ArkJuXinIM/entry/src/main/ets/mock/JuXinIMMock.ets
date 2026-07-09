@@ -1,6 +1,6 @@
-import { Contact, Message, PlanCardData } from '../model/JuXinIMModels'
+import { Contact, Message, PlanCardData, IContactData, IMessageData } from '../model/JuXinIMModels'
 
-const RAW_CONTACTS: Record<string, Object>[] = [
+const RAW_CONTACTS: IContactData[] = [
   { id: 'u001', name: '老王', avatar: '👨', status: '在线', recentMessage: '好的，南京见！', recentTime: '14:30' },
   { id: 'u002', name: '旅友小张', avatar: '👩', status: '在线', recentMessage: '你上次推荐的李记清真馆超赞', recentTime: '昨天' },
   { id: 'u003', name: '妈妈', avatar: '👩‍🦰', status: '离线', recentMessage: '路上注意安全', recentTime: '周一' },
@@ -12,16 +12,16 @@ const RAW_CONTACTS: Record<string, Object>[] = [
 ]
 
 export class JuXinIMMock {
-  static getRawContacts(): Record<string, Object>[] {
+  static getRawContacts(): IContactData[] {
     return RAW_CONTACTS
   }
 
   static getContacts(): Contact[] {
-    return RAW_CONTACTS.map((d: Record<string, Object>) => Contact.fromJSON(d))
+    return RAW_CONTACTS.map((d: IContactData) => Contact.fromJSON(d))
   }
 
   static getMessages(contactId: string): Message[] {
-    let raw: Record<string, Object>[] = [
+    let raw: IMessageData[] = [
       { id: 'm001', fromId: 'u001', content: '小李，你那个南京旅行计划定好了吗？', time: '14:20', isMe: false, isPlanCard: false, planCard: null },
       { id: 'm002', fromId: 'me', content: '定好啦！小艺帮我规划的，三天两夜，吃喝玩乐都有', time: '14:22', isMe: true, isPlanCard: false, planCard: null },
       { id: 'm003', fromId: 'me', content: '发你旅行计划卡看看~', time: '14:22', isMe: true, isPlanCard: false, planCard: null },
@@ -35,6 +35,6 @@ export class JuXinIMMock {
       { id: 'm005', fromId: 'u001', content: '看起来很棒！我看看时间能不能调整一下，争取一起去', time: '14:28', isMe: false, isPlanCard: false, planCard: null },
       { id: 'm006', fromId: 'u001', content: '好的，南京见！', time: '14:30', isMe: false, isPlanCard: false, planCard: null }
     ]
-    return raw.map((d: Record<string, Object>) => Message.fromJSON(d))
+    return raw.map((d: IMessageData) => Message.fromJSON(d))
   }
 }

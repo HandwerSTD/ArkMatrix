@@ -1,6 +1,6 @@
-import { POI, Route } from '../model/DaDeMapModels'
+import { POI, Route, IPoiData, IRouteData } from '../model/DaDeMapModels'
 
-const RAW_POIS: Record<string, Object>[] = [
+const RAW_POIS: IPoiData[] = [
   {
     name: '南京夫子庙',
     type: '景点',
@@ -57,7 +57,7 @@ const RAW_POIS: Record<string, Object>[] = [
   }
 ]
 
-const RAW_ROUTES: Record<string, Object>[] = [
+const RAW_ROUTES: IRouteData[] = [
   {
     type: '驾车',
     duration: '45分钟',
@@ -94,16 +94,16 @@ const RAW_NAV_STEPS: string[] = [
 ]
 
 export class DaDeMapMock {
-  static getRawPOIs(): Record<string, Object>[] {
+  static getRawPOIs(): IPoiData[] {
     return RAW_POIS
   }
 
   static getNearbyPOIs(): POI[] {
-    return RAW_POIS.map((d: Record<string, Object>) => POI.fromJSON(d))
+    return RAW_POIS.map((d: IPoiData) => POI.fromJSON(d))
   }
 
   static getRoutes(): Route[] {
-    return RAW_ROUTES.map((d: Record<string, Object>) => Route.fromJSON(d))
+    return RAW_ROUTES.map((d: IRouteData) => Route.fromJSON(d))
   }
 
   static getNavigationSteps(): string[] {

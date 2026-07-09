@@ -1,6 +1,6 @@
-import { Note, ChecklistItem } from '../model/NoteModels'
+import { Note, ChecklistItem, INoteData, IChecklistItemData } from '../model/NoteModels'
 
-const RAW_NOTES: Record<string, Object>[] = [
+const RAW_NOTES: INoteData[] = [
   {
     id: 'n001',
     title: '南京旅行打包清单',
@@ -64,23 +64,23 @@ const RAW_NOTES: Record<string, Object>[] = [
 ]
 
 export class NotesMock {
-  static getRawNotes(): Record<string, Object>[] {
+  static getRawNotes(): INoteData[] {
     return RAW_NOTES
   }
 
   static getNotes(): Note[] {
-    return RAW_NOTES.map((d: Record<string, Object>) => Note.fromJSON(d))
+    return RAW_NOTES.map((d: INoteData) => Note.fromJSON(d))
   }
 
   static createNote(data: Record<string, Object>): Note {
-    let d: Record<string, Object> = {
+    let d: INoteData = {
       id: 'n_new_' + Date.now(),
-      title: data['title'] || '',
-      content: data['content'] || '',
+      title: (data['title'] as string) || '',
+      content: (data['content'] as string) || '',
       date: new Date().toISOString().split('T')[0],
-      tags: data['tags'] || [],
-      type: data['type'] || 'note',
-      checklist: data['checklist'] || []
+      tags: (data['tags'] as string[]) || [],
+      type: (data['type'] as 'note' | 'checklist') || 'note',
+      checklist: (data['checklist'] as IChecklistItemData[]) || []
     }
     return Note.fromJSON(d)
   }

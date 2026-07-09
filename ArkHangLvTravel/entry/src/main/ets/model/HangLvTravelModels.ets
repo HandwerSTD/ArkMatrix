@@ -1,3 +1,26 @@
+export interface ITicketData {
+  id: string
+  type: string
+  trainNo: string
+  departure: string
+  arrival: string
+  departTime: string
+  arriveTime: string
+  duration: string
+  price: number
+  delay: string
+  isSubscribed: boolean
+  isBooked: boolean
+}
+
+export interface ITripData {
+  id: string
+  ticketId: string
+  status: string
+  bookDate: string
+  passengers: string[]
+}
+
 @ObservedV2
 export class Ticket {
   @Trace id: string = ''
@@ -13,7 +36,7 @@ export class Ticket {
   @Trace isSubscribed: boolean = false
   @Trace isBooked: boolean = false
 
-  toJSON(): Record<string, Object> {
+  toJSON(): ITicketData {
     return {
       id: this.id, type: this.type, trainNo: this.trainNo,
       departure: this.departure, arrival: this.arrival,
@@ -23,20 +46,13 @@ export class Ticket {
     }
   }
 
-  static fromJSON(data: Record<string, Object>): Ticket {
+  static fromJSON(data: ITicketData): Ticket {
     let t: Ticket = new Ticket()
-    if (data['id'] !== undefined) t.id = data['id'] as string
-    if (data['type'] !== undefined) t.type = data['type'] as string
-    if (data['trainNo'] !== undefined) t.trainNo = data['trainNo'] as string
-    if (data['departure'] !== undefined) t.departure = data['departure'] as string
-    if (data['arrival'] !== undefined) t.arrival = data['arrival'] as string
-    if (data['departTime'] !== undefined) t.departTime = data['departTime'] as string
-    if (data['arriveTime'] !== undefined) t.arriveTime = data['arriveTime'] as string
-    if (data['duration'] !== undefined) t.duration = data['duration'] as string
-    if (data['price'] !== undefined) t.price = data['price'] as number
-    if (data['delay'] !== undefined) t.delay = data['delay'] as string
-    if (data['isSubscribed'] !== undefined) t.isSubscribed = data['isSubscribed'] as boolean
-    if (data['isBooked'] !== undefined) t.isBooked = data['isBooked'] as boolean
+    t.id = data.id; t.type = data.type; t.trainNo = data.trainNo
+    t.departure = data.departure; t.arrival = data.arrival
+    t.departTime = data.departTime; t.arriveTime = data.arriveTime
+    t.duration = data.duration; t.price = data.price; t.delay = data.delay
+    t.isSubscribed = data.isSubscribed; t.isBooked = data.isBooked
     return t
   }
 }
@@ -49,20 +65,17 @@ export class Trip {
   @Trace bookDate: string = ''
   @Trace passengers: string[] = []
 
-  toJSON(): Record<string, Object> {
+  toJSON(): ITripData {
     return {
       id: this.id, ticketId: this.ticketId, status: this.status,
       bookDate: this.bookDate, passengers: this.passengers
     }
   }
 
-  static fromJSON(data: Record<string, Object>): Trip {
+  static fromJSON(data: ITripData): Trip {
     let t: Trip = new Trip()
-    if (data['id'] !== undefined) t.id = data['id'] as string
-    if (data['ticketId'] !== undefined) t.ticketId = data['ticketId'] as string
-    if (data['status'] !== undefined) t.status = data['status'] as string
-    if (data['bookDate'] !== undefined) t.bookDate = data['bookDate'] as string
-    if (data['passengers'] !== undefined) t.passengers = data['passengers'] as string[]
+    t.id = data.id; t.ticketId = data.ticketId; t.status = data.status
+    t.bookDate = data.bookDate; t.passengers = data.passengers
     return t
   }
 }

@@ -1,16 +1,30 @@
+export interface IChecklistItemData {
+  text: string
+  isDone: boolean
+}
+
+export interface INoteData {
+  id: string
+  title: string
+  content: string
+  date: string
+  tags: string[]
+  type: 'note' | 'checklist'
+  checklist: IChecklistItemData[]
+}
+
 @ObservedV2
 export class ChecklistItem {
   @Trace text: string = ''
   @Trace isDone: boolean = false
 
-  toJSON(): Record<string, Object> {
+  toJSON(): IChecklistItemData {
     return { text: this.text, isDone: this.isDone }
   }
 
-  static fromJSON(data: Record<string, Object>): ChecklistItem {
+  static fromJSON(data: IChecklistItemData): ChecklistItem {
     let c: ChecklistItem = new ChecklistItem()
-    if (data['text'] !== undefined) c.text = data['text'] as string
-    if (data['isDone'] !== undefined) c.isDone = data['isDone'] as boolean
+    c.text = data.text; c.isDone = data.isDone
     return c
   }
 }
@@ -25,27 +39,19 @@ export class Note {
   @Trace type: 'note' | 'checklist' = 'note'
   @Trace checklist: ChecklistItem[] = []
 
-  toJSON(): Record<string, Object> {
-    let json: Record<string, Object> = {
+  toJSON(): INoteData {
+    return {
       id: this.id, title: this.title, content: this.content,
-      date: this.date, tags: this.tags, type: this.type
+      date: this.date, tags: this.tags, type: this.type,
+      checklist: this.checklist.map((item: ChecklistItem) => item.toJSON())
     }
-    json['checklist'] = this.checklist.map((item: ChecklistItem) => item.toJSON())
-    return json
   }
 
-  static fromJSON(data: Record<string, Object>): Note {
+  static fromJSON(data: INoteData): Note {
     let n: Note = new Note()
-    if (data['id'] !== undefined) n.id = data['id'] as string
-    if (data['title'] !== undefined) n.title = data['title'] as string
-    if (data['content'] !== undefined) n.content = data['content'] as string
-    if (data['date'] !== undefined) n.date = data['date'] as string
-    if (data['tags'] !== undefined) n.tags = data['tags'] as string[]
-    if (data['type'] !== undefined) n.type = data['type'] as 'note' | 'checklist'
-    if (data['checklist']) {
-      let rawItems: Record<string, Object>[] = data['checklist'] as Record<string, Object>[]
-      n.checklist = rawItems.map((d: Record<string, Object>) => ChecklistItem.fromJSON(d))
-    }
+    n.id = data.id; n.title = data.title; n.content = data.content
+    n.date = data.date; n.tags = data.tags; n.type = data.type
+    n.checklist = data.checklist.map((d: IChecklistItemData) => ChecklistItem.fromJSON(d))
     return n
   }
 }
